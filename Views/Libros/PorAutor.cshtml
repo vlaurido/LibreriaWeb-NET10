@@ -1,0 +1,42 @@
+﻿@model IEnumerable<LibreriaWeb.Models.Libro>
+
+@{
+    ViewData["Title"] = "Index por autor";
+}
+
+<h1>Libros de @ViewData["AutorNombre"]</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Titulo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AutorId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => item.Titulo)
+                </td>
+                <td>
+                    @item.Autor?.Nombre
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-controller="Autores" asp-action="Details" asp-route-id="@ViewData["AutorId"]">Regresar a Autor</a>
+</div>

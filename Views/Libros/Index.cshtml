@@ -1,0 +1,56 @@
+@model IEnumerable<LibreriaWeb.Models.Libro>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Libros</h1>
+
+<p>
+    <a asp-action="Create">Nuevo Libro</a>
+</p>
+
+<!-- Formulario de búsqueda -->
+<form asp-action="Index" method="get" class="form-inline mb-3">
+    <div class="form-group">
+        <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control" placeholder="Búsqueda por título o autor..." />
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Buscar</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Titulo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AnioPublicacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AutorId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.Titulo)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.AnioPublicacion)
+            </td>
+            <td>
+                    @item.Autor?.Nombre
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
