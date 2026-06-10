@@ -30,6 +30,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.AutorId)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImagenRuta)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -46,6 +49,11 @@
                     @item.Autor?.Nombre
             </td>
             <td>
+                    @if (!string.IsNullOrEmpty(item.ImagenRuta))
+                    {
+                        <img src="@item.ImagenRuta" alt="Portada" style="width:50px;height:auto;" />
+                    }
+            <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
@@ -54,3 +62,25 @@
 }
     </tbody>
 </table>
+
+<nav aria-label="Paginación de libros">
+    <ul class="pagination">
+        @{
+            int currentPage = ViewData["CurrentPage"] as int? ?? 1;
+            int totalPages = ViewData["TotalPages"] as int? ?? 1;
+            string currentFilter = ViewData["CurrentFilter"] as string ?? "";
+        }
+
+        @for (int i = 1; i <= totalPages; i++)
+        {
+            <li class="page-item @(i == currentPage ? "active" : "")">
+                <a class="page-link"
+                   asp-action="Index"
+                   asp-route-page="@i"
+                   asp-route-searchString="@currentFilter">
+                    @i
+                </a>
+            </li>
+        }
+    </ul>
+</nav>

@@ -14,8 +14,10 @@ public class AutoresController : Controller
     }
 
     // GET: AUTORS
-    public async Task<IActionResult> Index(string searchString)
+    public async Task<IActionResult> Index(string searchString, int page = 1)
     {
+        int pageSize = 3; //Número de libros por página
+
         var autores = _context.Autores
             .Include(a => a.Libros) //Incluir libros
             .AsQueryable();   //permite ir agregando filtros dinámicamente
@@ -25,9 +27,19 @@ public class AutoresController : Controller
             autores = autores.Where(a => a.Nombre.Contains(searchString));
         }
 
-        ViewData["CurrentFilter"] = searchString; //para mantener el valor de búsqueda en la vista
+        int totalAutores = await autores.CountAsync(); //Número total de autores después de aplicar el filtro
 
-        return View(await autores.OrderBy(a => a.Nombre).ToListAsync());
+        var autores2 = await autores
+        .OrderBy(a => a.Nombre)
+        .Skip((page - 1) * pageSize)
+        .Take(pageSize)
+        .ToListAsync();
+
+        ViewData["CurrentFilter"] = searchString; //para mantener el valor de búsqueda en la vista
+        ViewData["CurrentPage"] = page; //para mantener la página actual en la vista
+        ViewData["TotalPages"] = (int)Math.Ceiling((double)totalAutores / pageSize); //para mostrar el número total de páginas en la vista
+
+        return View(autores2);
     }
 
     // GET: AUTORS/Details/5

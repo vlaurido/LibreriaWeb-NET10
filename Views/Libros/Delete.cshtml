@@ -34,6 +34,18 @@
             @Model.Autor?.Nombre
         </dd>
     </dl>
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ImagenRuta)
+        </dt>
+        <dd class = "col-sm-10">
+            @if (!string.IsNullOrEmpty(Model.ImagenRuta))
+            {
+                <img src="@Model.ImagenRuta" alt="Portada" style="width:100px;height:auto;" />
+            }
+        </dd>
+    </dl>
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
